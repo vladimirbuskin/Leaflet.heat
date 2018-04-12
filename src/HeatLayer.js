@@ -208,6 +208,6 @@ L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
     }
 });
 
-L.heatLayer = function (latlngs, options) {
+L.heatLayer = function (latlngs, options, zoom) {
     return new L.HeatLayer(latlngs, options);
 };

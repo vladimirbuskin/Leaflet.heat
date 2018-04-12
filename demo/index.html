@@ -2,8 +2,13 @@
 <html>
 <head>
     <title>Leaflet.heat demo</title>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
+          integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
+            integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         #map { width: 800px; height: 600px; }
         body { font: 16px/1.4 "Helvetica Neue", Arial, sans-serif; }
@@ -13,6 +18,8 @@
 </head>
 <body>
 
+<img id="marker" src="https://www.gd.ru/images/articles/9598/D83DDCCD.png" />
+<img id="marker" src="https://www.kleen-ritecorp.com/images/reviewstarsmallempty.png" />
 <p>
     A 10,000-point demo of <a href="https://github.com/Leaflet/Leaflet.heat">Leaflet.heat</a>, a tiny and fast Leaflet heatmap plugin.
     <iframe class="ghbtns" src="http://ghbtns.com/github-btn.html?user=Leaflet&amp;repo=Leaflet.heat&amp;type=watch&amp;count=true"
@@ -21,10 +28,11 @@
 
 <div id="map"></div>
 
-<!-- <script src="../node_modules/simpleheat/simpleheat.js"></script>
-<script src="../src/HeatLayer.js"></script> -->
+<script src="../node_modules/simpleheat/simpleheat.js"></script>
+<script src="../src/HeatLayer.js"></script>
+<script src="../src/RenderLayer.js"></script>
 
-<script src="../dist/leaflet-heat.js"></script>
+<!-- <script src="../dist/leaflet-heat.js"></script> -->
 
 <script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
 <script>
@@ -37,7 +45,19 @@ var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 addressPoints = addressPoints.map(function (p) { return [p[0], p[1]]; });
 
-var heat = L.heatLayer(addressPoints).addTo(map);
+var icon = document.getElementById('marker');
+var size = 16;
+var sizeHalf = size/2;
+var heat = L.renderLayer(
+  addressPoints,
+  {
+    draw: function(ctx, p, options) {
+
+      // image
+      ctx.drawImage(icon, p.x-sizeHalf, p.y-sizeHalf, size, size);
+    }
+  }
+).addTo(map);
 
 </script>
 </body>
